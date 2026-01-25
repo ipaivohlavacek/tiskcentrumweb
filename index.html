@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tiskárna & Výroba knih | Moje Firma</title>
+    <title>Tiskárna & Výroba knih | TISKCENTRUM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -46,7 +46,15 @@
         /* --- HLAVIČKA --- */
         header { background: var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
         .header-content { display: flex; justify-content: space-between; align-items: center; height: 90px; }
-        .logo { font-size: 1.8rem; font-weight: 800; color: var(--primary-color); text-transform: uppercase; letter-spacing: 2px; }
+        
+        .logo { 
+            font-size: 1.8rem; /* Základní velikost pro PC */
+            font-weight: 800; 
+            color: var(--primary-color); 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+        }
+
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { font-weight: 600; color: var(--primary-color); transition: var(--transition); font-size: 0.95rem; text-transform: uppercase; }
         .nav-links a:hover { color: var(--hover-color); }
@@ -148,6 +156,9 @@
         }
 
         @media (max-width: 768px) {
+            /* ZMENŠENÍ LOGA PRO MOBILY */
+            .logo { font-size: 1.3rem; }
+
             .nav-links { display: none; position: absolute; top: 90px; right: 0; width: 100%; background: #fff; flex-direction: column; text-align: center; padding: 20px 0; box-shadow: 0 5px 10px rgba(0,0,0,0.1); }
             .hamburger { display: block; font-size: 1.8rem; cursor: pointer; color: var(--primary-color); }
             #menu-toggle:checked ~ .nav-links { display: flex; }
@@ -162,7 +173,7 @@
 
     <header>
         <div class="container header-content">
-            <a href="#" class="logo">MOJE TISKÁRNA</a>
+            <a href="#" class="logo">TISKCENTRUM</a>
             <nav>
                 <input type="checkbox" id="menu-toggle">
                 <label for="menu-toggle" class="hamburger"><i class="fas fa-bars"></i></label>
@@ -283,7 +294,7 @@
 
     <footer>
         <div class="container footer-content">
-            <p>&copy; 2026 Moje Tiskárna s.r.o. | Všechna práva vyhrazena.</p>
+            <p>&copy; 2026 TISKCENTRUM s.r.o. | Všechna práva vyhrazena.</p>
         </div>
     </footer>
 
