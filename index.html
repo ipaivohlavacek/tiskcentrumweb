@@ -56,7 +56,7 @@
             color: var(--white); 
         }
 
-        /* --- HLAVIČKA (Výška 70px) --- */
+        /* --- HLAVIČKA --- */
         header { background: var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 1000; }
         
         .header-content { display: flex; justify-content: space-between; align-items: center; height: 70px; }
@@ -69,9 +69,51 @@
             letter-spacing: 2px; 
         }
 
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a { font-weight: 600; color: var(--primary-color); transition: var(--transition); font-size: 0.95rem; text-transform: uppercase; }
-        .nav-links a:hover { color: var(--hover-color); }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links > li > a { font-weight: 600; color: var(--primary-color); transition: var(--transition); font-size: 0.95rem; text-transform: uppercase; padding: 10px 0; }
+        .nav-links > li > a:hover { color: var(--hover-color); }
+        
+        /* --- DROPDOWN MENU (VYSOUVACÍ NABÍDKA) --- */
+        .dropdown {
+            position: relative; /* Rodič pro absolutní pozicování menu */
+        }
+
+        .dropdown-menu {
+            display: none; /* Ve výchozím stavu skryto */
+            position: absolute;
+            top: 100%; /* Hned pod tlačítkem */
+            left: 0;
+            background-color: var(--white);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            min-width: 280px; /* Šířka rozbalovacího menu */
+            border-top: 3px solid var(--hover-color);
+            z-index: 9999;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block; /* Zobrazit při najetí myši */
+        }
+
+        .dropdown-menu li {
+            width: 100%;
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 12px 20px;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #eee;
+            text-transform: none; /* Normální velikost písmen v podmenu */
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+            padding-left: 25px; /* Efekt posunutí při najetí */
+        }
+
         #menu-toggle, .hamburger { display: none; }
 
         /* --- HERO SEKCE S VIDEEM --- */
@@ -123,7 +165,6 @@
         .service-card:hover { transform: translateY(-10px); }
         .service-card .icon { font-size: 3.5rem; color: var(--hover-color); margin-bottom: 25px; }
         
-        /* Styl pro karty s obrázky */
         .service-img {
             padding: 0;
             min-height: 300px;
@@ -152,6 +193,22 @@
         @media (max-width: 768px) {
             .logo { font-size: 1.3rem; }
             .nav-links { display: none; position: absolute; top: 70px; right: 0; width: 100%; background: #fff; flex-direction: column; text-align: center; padding: 20px 0; box-shadow: 0 5px 10px rgba(0,0,0,0.1); }
+            
+            /* Úprava dropdownu pro mobil */
+            .dropdown-menu {
+                position: static; /* Na mobilu nebude "vyskakovat", ale bude součástí seznamu */
+                display: block; /* Na mobilu zobrazíme rovnou, nebo můžeme skrýt, ale hover na mobilu nefunguje dobře */
+                box-shadow: none;
+                border-top: none;
+                background-color: #f9f9f9;
+                padding-left: 0;
+            }
+            .dropdown-menu li a {
+                padding: 10px;
+                font-size: 0.85rem;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
             .hamburger { display: block; font-size: 1.8rem; cursor: pointer; color: var(--primary-color); }
             #menu-toggle:checked ~ .nav-links { display: flex; }
             .contact-wrapper { grid-template-columns: 1fr; }
@@ -170,7 +227,17 @@
                 <label for="menu-toggle" class="hamburger"><i class="fas fa-bars"></i></label>
                 <ul class="nav-links">
                     <li><a href="#services">Služby</a></li>
-                    <li><a href="#production">Výroba</a></li>
+                    
+                    <li class="dropdown">
+                        <a href="#production">Výroba <i class="fas fa-caret-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="tisk.html">Moderní tiskové stroje</a></li>
+                            <li><a href="predtisk.html">Předtisková příprava</a></li>
+                            <li><a href="dokoncujici.html">Dokončující zpracování tiskovin</a></li>
+                            <li><a href="zuslechteni.html">Zušlechťovací technologie</a></li>
+                        </ul>
+                    </li>
+
                     <li><a href="#about">O nás</a></li>
                     <li><a href="#contact">Kontakt</a></li>
                 </ul>
