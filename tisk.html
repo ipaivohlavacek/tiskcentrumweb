@@ -33,13 +33,26 @@
 
         /* NAVIGACE */
         .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-links > li > a { font-weight: 600; color: var(--primary-color); transition: var(--transition); font-size: 0.95rem; text-transform: uppercase; padding: 10px 0; }
+        .nav-links > li { position: relative; }
+        .nav-links > li > a { font-weight: 600; color: var(--primary-color); transition: var(--transition); font-size: 0.95rem; text-transform: uppercase; padding: 15px 0; display: block; }
         .nav-links > li > a:hover { color: var(--hover-color); }
         
-        /* --- DROPDOWN MENU (VYSOUVACÍ NABÍDKA) --- */
-        .dropdown { position: relative; }
-        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background-color: var(--white); box-shadow: 0 5px 15px rgba(0,0,0,0.1); min-width: 280px; border-top: 3px solid var(--hover-color); z-index: 9999; }
-        .dropdown:hover .dropdown-menu { display: block; }
+        /* --- DROPDOWN MENU (Upravené pro JS) --- */
+        .dropdown-menu { 
+            display: none; 
+            position: absolute; 
+            top: 100%; 
+            left: 0; 
+            background-color: var(--white); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+            min-width: 280px; 
+            border-top: 3px solid var(--hover-color); 
+            z-index: 9999; 
+        }
+        
+        /* Třída pro zobrazení menu */
+        .dropdown-menu.show { display: block; }
+
         .dropdown-menu li { width: 100%; }
         .dropdown-menu li a { display: block; padding: 12px 20px; color: var(--text-color); font-weight: 500; font-size: 0.9rem; border-bottom: 1px solid #eee; text-transform: none; }
         .dropdown-menu li a:hover { background-color: var(--secondary-color); color: var(--primary-color); padding-left: 25px; }
@@ -58,19 +71,30 @@
             margin-bottom: 50px;
         }
 
-        .subpage-hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-        }
+        .subpage-hero h1 { font-size: 3.5rem; font-weight: 800; }
 
         /* --- TEXTOVÝ OBSAH --- */
         .about-text p { margin-bottom: 20px; font-size: 1.1rem; text-align: justify; }
         
-        /* Boxy s ikonami */
-        .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 50px; }
-        .tech-item { text-align: center; padding: 30px; border: 1px solid #eee; border-radius: 8px; background: #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .tech-item i { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 15px; }
-        .tech-item h4 { font-size: 1.2rem; margin-bottom: 10px; font-weight: 700; color: var(--primary-color); }
+        /* --- GRID PRO FOTKY (NOVÉ) --- */
+        .tech-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 30px; 
+            margin-top: 50px; 
+        }
+        
+        .photo-item { 
+            height: 350px; /* Výška fotky */
+            background-color: #eee; /* Šedé pozadí, dokud není fotka */
+            border-radius: 8px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            /* Zde můžeš nastavit výchozí obrázek, pokud nemáš inline styl */
+            /* background-image: url('cesta/k/fotce.jpg'); */
+        }
 
         /* --- PATIČKA --- */
         footer { background: var(--primary-color); color: #fff; padding: 30px 0; text-align: center; margin-top: 80px; }
@@ -83,7 +107,7 @@
             #menu-toggle:checked ~ .nav-links { display: flex; }
             
             /* Mobilní dropdown */
-            .dropdown-menu { position: static; display: block; box-shadow: none; border-top: none; background-color: #f9f9f9; padding-left: 0; }
+            .dropdown-menu { position: static; display: block; box-shadow: none; border-top: none; background-color: #f9f9f9; padding-left: 0; min-width: 100%; }
             .dropdown-menu li a { padding: 10px; font-size: 0.85rem; border-bottom: 1px solid #e0e0e0; }
 
             .subpage-hero h1 { font-size: 2.5rem; }
@@ -103,8 +127,8 @@
                     <li><a href="index.html#services">Služby</a></li>
                     
                     <li class="dropdown">
-                        <a href="index.html#production">Výroba <i class="fas fa-caret-down"></i></a>
-                        <ul class="dropdown-menu">
+                        <a href="javascript:void(0)" onclick="toggleMenu(event)">Výroba <i class="fas fa-caret-down"></i></a>
+                        <ul class="dropdown-menu" id="vyrobaSubmenu">
                             <li><a href="tisk.html">Moderní tiskové stroje</a></li>
                             <li><a href="predtisk.html">Předtisková příprava</a></li>
                             <li><a href="dokoncujici.html">Dokončující zpracování tiskovin</a></li>
@@ -127,34 +151,22 @@
 
     <section class="container">
         <div class="about-text">
-            <p>Tiskové stroje Heidelberg vždy patřily a patří k absolutní špičce na světových trzích a to zejména díky dokonalému dílenskému zpracování, spolehlivosti a technickým inovacím. Dále jsou specifické vysokým stupněm automatizace pro dané potřeby tiskové produkce.</p>
+            <p>Jádrem naší tiskárny jsou špičkové ofsetové stroje značky <strong>Heidelberg</strong>, které představují světovou špičku v polygrafii. Zaměřujeme se na formát B1 (750 × 1050 mm), který nám umožňuje efektivně tisknout jak velké náklady knih, tak i menší zakázky s maximální hospodárností.</p>
             
-            <p>Důležitým pomocníkem je unikátní systém Printec Workflow, který zvládá řešit složité procesy polygrafického provozu jednoduchým způsobem. Od kalkulace, přes plánování výroby, tisk až po expedici. Systém jednoduše zpracuje celou technologii výroby a elektronicky komunikuje se všemi technologiemi a stroji, kterým předává důležité informace a parametry zadané zákazníkem v tiskových datech.</p>
+            <p>Jako první ve střední a východní Evropě jsme instalovali revoluční technologii <strong>Heidelberg XL 106-8 LED UV</strong>. Tato technologie umožňuje okamžité schnutí barev, což znamená, že tiskoviny mohou jít ihned do dalšího zpracování bez rizika rozmazání. Navíc nám umožňuje tisknout na širokou škálu nenatíraných a speciálních papírů s výsledkem, který je barevně stálý a vysoce kontrastní.</p>
             
-            <p>Vysokou kapacitu produkce zajišťují stroje s maximálními formáty papíru B1 (750 × 1050 mm), síly až do 1 mm, při maximálním průjezdu 18 000 archů za hodinu.</p>
+            <p>Díky vysokému stupni automatizace a propojení se systémem Printec Workflow garantujeme konzistentní barevnost a kvalitu od prvního do posledního archu.</p>
         </div>
 
         <div class="tech-grid">
-            <div class="tech-item">
-                <i class="fas fa-print"></i>
-                <h4>Heidelberg XL 106-8</h4>
-                <p>Osmibarevný ofsetový stroj s technologií LED UV.</p>
-            </div>
-            <div class="tech-item">
-                <i class="fas fa-bolt"></i>
-                <h4>LED UV Technologie</h4>
-                <p>Okamžité schnutí, vyšší kontrast a ekologický provoz.</p>
-            </div>
-            <div class="tech-item">
-                <i class="fas fa-expand"></i>
-                <h4>Formát B1</h4>
-                <p>Maximální potisknutelná plocha 750 × 1050 mm.</p>
-            </div>
-            <div class="tech-item">
-                <i class="fas fa-tachometer-alt"></i>
-                <h4>Vysoká rychlost</h4>
-                <p>Produkce až 18 000 archů za hodinu.</p>
-            </div>
+            <div class="photo-item" style="background-image: url('tisk1.jpg');">
+                </div>
+            
+            <div class="photo-item" style="background-image: url('tisk2.jpg');">
+                </div>
+            
+            <div class="photo-item" style="background-image: url('tisk3.jpg');">
+                </div>
         </div>
     </section>
 
@@ -164,6 +176,26 @@
         </div>
     </footer>
 
+    <script>
+        function toggleMenu(event) {
+            event.preventDefault();
+            var submenu = document.getElementById("vyrobaSubmenu");
+            submenu.classList.toggle("show");
+        }
+
+        // Zavření menu při kliknutí mimo
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown > a') && !event.target.matches('.dropdown > a > i')) {
+                var dropdowns = document.getElementsByClassName("dropdown-menu");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+
 </body>
 </html>
-
