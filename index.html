@@ -246,8 +246,7 @@
     </header>
 
     <section id="home" class="hero-video-container">
-        <video autoplay muted loop playsinline class="back-video">
-           <source src="video.mp4" type="video/mp4">
+        <video autoplay muted loop playsinline class="back-video" id="bg-video">
             Váš prohlížeč nepodporuje video tag.
         </video>
 
@@ -410,5 +409,26 @@
         </div>
     </footer>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var video = document.getElementById('bg-video');
+            var source = document.createElement('source');
+
+            // Kontrola šířky okna prohlížeče
+            if (window.innerWidth <= 768) {
+                // Načtení videa pro mobily (např. na výšku a v menším rozlišení)
+                source.src = 'video-mobile.mp4'; 
+            } else {
+                // Načtení původního videa pro počítače
+                source.src = 'video.mp4'; 
+            }
+
+            source.type = 'video/mp4';
+            video.appendChild(source);
+            
+            // Příkaz k načtení vybraného videa
+            video.load(); 
+        });
+    </script>
 </body>
 </html>
